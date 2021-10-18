@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import styles from "./NavigationBar.module.css";
-
 export default function NavigationBar(): JSX.Element {
   return (
     <nav className={styles.navbar}>

@@ -2,8 +2,8 @@ import firebase from "../firebase/clientApp";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { GenericCard } from "../components/GenericCard";
 
-const db = firebase.firestore();
 export default function Home() {
   const [data, isLoading, error] = useCollection(
     firebase
@@ -25,12 +25,11 @@ export default function Home() {
   //       </div>
   //     );
   //   }
+
   return (
     <div>
       {data?.docs.map((doc) => (
-        <div onClick={() => console.log(doc.data())}>
-          <h1>{doc.data().title}</h1>
-        </div>
+        <GenericCard doc={doc} />
       ))}
     </div>
   );
