@@ -13,7 +13,7 @@ export default function App(props: AppProps) {
   return (
     <>
       <Head>
-        <title>Page title</title>
+        <title>Veritas admin</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -22,14 +22,13 @@ export default function App(props: AppProps) {
 
       <MantineProvider
         theme={{
-          /** Put your mantine theme override here */
-          colorScheme: "dark",
+          colorScheme: "light",
         }}
       >
-        <NormalizeCSS />
-        <GlobalStyles />
-        <NavigationBar />
+        {/* <NormalizeCSS /> */}
+        {/* <GlobalStyles /> */}
         <Component {...pageProps} />
+        <NavigationBar />
       </MantineProvider>
     </>
   );

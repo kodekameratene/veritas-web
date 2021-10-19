@@ -8,7 +8,8 @@ export default function Home() {
     firebase
       .firestore()
       .collection("festival/6Eh4cCNaCEEVndCZEqSX/content")
-      .where("page", "array-contains", "program"),
+      .where("page", "array-contains", "program")
+      .orderBy("startTime", "asc"),
     {}
   );
 
@@ -25,7 +26,7 @@ export default function Home() {
   //     );
   //   }
   return (
-    <div>
+    <div style={{ backgroundColor: "whitesmoke", padding: 12 }}>
       {data?.docs.map((doc) => (
         <GenericCard key={doc.id} doc={doc} />
       ))}

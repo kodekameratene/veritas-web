@@ -16,7 +16,7 @@ export default function Home() {
   );
 
   return (
-    <div>
+    <div style={{ backgroundColor: "whitesmoke", padding: 12 }}>
       <div
         style={{
           paddingLeft: 24,

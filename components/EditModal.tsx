@@ -1,15 +1,9 @@
-import {
-  ActionIcon,
-  Button,
-  Checkbox,
-  Modal,
-  Textarea,
-  TextInput,
-  Tooltip,
-} from "@mantine/core";
+import { Button, Checkbox, Modal, Textarea, TextInput } from "@mantine/core";
 import React from "react";
-import { DatePicker, TimeInput } from "@mantine/dates";
-import * as Icon from "react-feather";
+import firebase from "firebase";
+import DateTime from "react-datetime";
+import moment from "moment";
+import { InteractiveStringArray } from "./renderStringArray";
 
 export function EditModal(props: {
   opened: boolean;
@@ -30,7 +24,9 @@ export function EditModal(props: {
     timestamp,
     track,
     url,
+    person,
   } = form.values;
+  console.log(form.values);
   return (
     <Modal
       opened={opened}
@@ -52,6 +48,7 @@ export function EditModal(props: {
           }
           placeholder="Kari er som de fleste nordmenn født med ski på bena. Foruten å stå på ski liker hun å snakke om..."
           label="Content"
+          autosize
         />
         <TextInput
           value={img}
@@ -69,10 +66,41 @@ export function EditModal(props: {
           placeholder="https://en-ekstern-lenke.no"
           label="Lenke (url)"
         />
+        {page?.includes("program") && (
+          <div>
+            <h3>Start-tid</h3>
+            <DateTime
+              value={startTime.toDate()}
+              onChange={(date) => {
+                // firestore.Timestamp.fromDate(new Date());
+                const newDate = firebase.firestore.Timestamp.fromDate(
+                  moment(date).toDate()
+                );
+                return form.setFieldValue("startTime", newDate);
+              }}
+            />
+          </div>
+        )}
+        {/* // timestamp?: { nanoseconds: number; seconds: number }; // UTC? Or what? */}
+        {page?.includes("news") && (
+          <div>
+            <h3>TimeStamp</h3>
+            <DateTime
+              value={timestamp.toDate()}
+              onChange={(date) => {
+                const newDate = firebase.firestore.Timestamp.fromDate(
+                  moment(date).toDate()
+                );
+                return form.setFieldValue("timestamp", newDate);
+              }}
+            />
+          </div>
+        )}
+
         <ActionSection />
 
         <hr />
-        <h2 style={{ color: "white" }}>Ekstra</h2>
+        <h2>Ekstra</h2>
         <TextInput
           value={showGroup}
           onChange={(event) =>
@@ -88,49 +116,43 @@ export function EditModal(props: {
           placeholder="0"
           label="index - For sortering"
         />
+        <div>
+          <h3>Grupper</h3>
+          <InteractiveStringArray
+            value={group}
+            onChange={(updatedValue: string[]): void => {
+              form.setFieldValue("group", updatedValue);
+            }}
+          />
+        </div>
+        <div>
+          <h3>Personer</h3>
+          <InteractiveStringArray
+            value={person}
+            onChange={(updatedValue: string[]): void => {
+              form.setFieldValue("person", updatedValue);
+            }}
+          />
+        </div>
         <hr />
-        <p style={{ color: "white" }}>Ting som ikke fungerer enda...</p>
+        <div>
+          <p>Spor - Må ha "Veritas" for å vises i programmet.</p>
+          <p>...og må ha minst ett spor! (bug i appen)</p>
+          <InteractiveStringArray
+            value={track}
+            onChange={(updatedValue: string[]): void => {
+              form.setFieldValue("track", updatedValue);
+            }}
+          />
+        </div>
+        <hr />
+        <h2>Ting som ikke fungerer enda...</h2>
         <div>
           {/* group?: [string]; // Add all the groups this card belongs to. (Is used for linking to other cards). Potential for recursive links... See the showGroup */}
-          <h3 style={{ color: "white" }}>TODO: Grupper</h3>
-          {renderStringArray(group)}
-        </div>
-        <div>
-          {/* group?: [string]; // Add all the groups this card belongs to. (Is used for linking to other cards). Potential for recursive links... See the showGroup */}
-          <h3 style={{ color: "white" }}>TODO: pages</h3>
-          {/* {renderStringArray(page)} */}
-          <Checkbox checked={page.includes("news")} label="Nyhets-post" />
-          <Checkbox checked={page.includes("program")} label="Program-post" />
-          <Checkbox checked={page.includes("info")} label="Info-post" />
-        </div>
-
-        {/* 
-// url?: string; // Clickable url */}
-        <div>
-          {/* // startTime?: { nanoseconds: number; seconds: number }; // UTC? Or what? */}
-          <h3 style={{ color: "white" }}>TODO: Start-time</h3>
-          <DatePicker
-            placeholder="Velg en dag"
-            label="Dag"
-            dropdownType="modal"
-          />
-          <TimeInput label="Klokkeslett" />
-        </div>
-        <div>
-          {/* // timestamp?: { nanoseconds: number; seconds: number }; // UTC? Or what? */}
-          <h3 style={{ color: "white" }}>TODO: timeStamp</h3>
-          <DatePicker
-            placeholder="Velg en dag"
-            label="Dag"
-            dropdownType="modal"
-          />
-          <TimeInput label="What time is it now?" />
-        </div>
-        <div>
-          <p style={{ color: "white" }}>
-            Tracks - Not sure if this is used for anything... {"🤔"}
-          </p>
-          {renderStringArray(track)}
+          <h3>TODO: pages</h3>
+          <Checkbox checked={page?.includes("news")} label="Nyhets-post" />
+          <Checkbox checked={page?.includes("program")} label="Program-post" />
+          <Checkbox checked={page?.includes("info")} label="Info-post" />
         </div>
 
         <ActionSection />
@@ -149,33 +171,4 @@ export function EditModal(props: {
       </div>
     );
   }
-}
-function renderStringArray(track: any) {
-  if (track?.length > 0) {
-    return (
-      <div>
-        {track?.map((t: string) => {
-          return (
-            <div
-              style={{
-                color: "white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <p>{t}</p>
-              <Tooltip label={`Remove "${t}"`}>
-                <ActionIcon color="red">
-                  <Icon.Trash2 />
-                </ActionIcon>
-              </Tooltip>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
-  return <p style={{ color: "white" }}>Ingen elementer</p>;
 }

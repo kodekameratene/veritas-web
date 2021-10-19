@@ -14,6 +14,7 @@ import { db } from "../pages/_app";
 import { getTimeString } from "../utils/getTimeString";
 import { EditModal } from "./EditModal";
 import { removeUndefined } from "../utils/removeUndefined";
+import Link from "next/link";
 
 // content: "Velkommen til Veritaskonferansen! Vi har gledet oss lenge."
 // index: "0"
@@ -43,18 +44,20 @@ export function GenericCard(props: {
     timestamp,
     track,
     url,
+    person,
   }: {
     title?: string;
     content?: string;
     img?: string; // Url to an image to display
     group?: [string]; // Add all the groups this card belongs to. (Is used for linking to other cards). Potential for recursive links... See the showGroup
     index?: string; // Used when we don't have a time to sort on. For example on the info-page.
-    page?: ["info" | "news" | "program"]; // What page it is shown on (can be multiple)
+    page?: ["info" | "news" | "program" | undefined]; // What page it is shown on (can be multiple)
     showGroup?: string; // Will show all cards with the specified groupname inside this one
     startTime?: { nanoseconds: number; seconds: number }; // UTC? Or what?
     timestamp?: { nanoseconds: number; seconds: number }; // UTC? Or what?
     track?: [string]; // Not sure if this is used for anything... 🤔
     url?: string; // Clickable url
+    person?: [string];
   } = doc.data();
 
   const collection = db.collection("festival/6Eh4cCNaCEEVndCZEqSX/content/");
@@ -71,6 +74,7 @@ export function GenericCard(props: {
     timestamp,
     track,
     url,
+    person,
   };
   const form = useForm({ initialValues });
   const handleSubmit = async (values: { [x: string]: any }) => {
@@ -84,7 +88,6 @@ export function GenericCard(props: {
       .catch((error) => console.error(error))
       .finally(() => setOpened(false));
   };
-  // console.log(doc.data());
   return (
     <>
       <EditModal
@@ -106,10 +109,8 @@ export function GenericCard(props: {
             style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
           >
             <Text weight={500}>{title}</Text>
-            <Badge>
-              {track}
-              {group}
-            </Badge>
+            {/* <Badge>{track}</Badge> */}
+            <Badge>{group}</Badge>
           </Group>
           <Group>
             {startTime && getTimeString(startTime)}
@@ -119,7 +120,11 @@ export function GenericCard(props: {
           <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
             {content}
           </Text>
-
+          {showGroup && (
+            <Link href={`search?group=${showGroup}`}>
+              <a>{`Viser også kort med gruppe "${showGroup}"`}</a>
+            </Link>
+          )}
           {url && (
             <a href={url} target="_blank" rel="noopener noreferrer">
               <Button

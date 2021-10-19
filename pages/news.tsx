@@ -27,7 +27,7 @@ export default function Home() {
   //   }
 
   return (
-    <div>
+    <div style={{ backgroundColor: "whitesmoke", padding: 12 }}>
       {data?.docs.map((doc) => (
         <GenericCard doc={doc} />
       ))}
