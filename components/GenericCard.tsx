@@ -6,15 +6,19 @@ import {
   useMantineTheme,
   Text,
   Image,
+  ActionIcon,
+  Tooltip,
+  Modal,
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import firebase from "../firebase/clientApp";
 import { db } from "../pages/_app";
 import { getTimeString } from "../utils/getTimeString";
 import { EditModal } from "./EditModal";
 import { removeUndefined } from "../utils/removeUndefined";
 import Link from "next/link";
+import * as Icon from "react-feather";
 
 // content: "Velkommen til Veritaskonferansen! Vi har gledet oss lenge."
 // index: "0"
@@ -62,6 +66,7 @@ export function GenericCard(props: {
 
   const collection = db.collection("festival/6Eh4cCNaCEEVndCZEqSX/content/");
   const [opened, setOpened] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const initialValues = {
     title,
     content,
@@ -90,6 +95,34 @@ export function GenericCard(props: {
   };
   return (
     <>
+      <Modal
+        opened={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Er du sikker du vil slette denne post-en?"
+      >
+        <div style={{ display: "flex" }}>
+          <Button
+            variant="filled"
+            color="gray"
+            onClick={() => setShowDeleteModal(false)}
+          >
+            Avbryt
+          </Button>
+          <div style={{ width: 8 }}></div>
+          <Button
+            variant="light"
+            color="red"
+            onClick={() => {
+              collection
+                .doc(doc.id)
+                .delete()
+                .then(() => setShowDeleteModal(false));
+            }}
+          >
+            Slett
+          </Button>
+        </div>
+      </Modal>
       <EditModal
         opened={opened}
         setOpened={setOpened}
@@ -137,6 +170,19 @@ export function GenericCard(props: {
               </Button>
             </a>
           )}
+          <div style={{ position: "absolute", right: 12, bottom: 12 }}>
+            <Tooltip label="Delete">
+              <ActionIcon
+                color="red"
+                onClick={(e: { stopPropagation: () => void }) => {
+                  e.stopPropagation();
+                  setShowDeleteModal(true);
+                }}
+              >
+                <Icon.Trash2 />
+              </ActionIcon>
+            </Tooltip>
+          </div>
         </Card>
       </div>
     </>

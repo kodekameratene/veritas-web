@@ -91,7 +91,11 @@ function PersonTableRow(props: {
         </td>
         <td>
           <Tooltip label="Delete">
-            <ActionIcon color="red" onClick={() => setOpened(true)}>
+            <ActionIcon
+              color="red"
+              onClick={() => setOpened(true)}
+              variant="outline"
+            >
               <Icon.Trash2 />
             </ActionIcon>
           </Tooltip>

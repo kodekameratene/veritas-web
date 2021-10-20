@@ -26,7 +26,6 @@ export function EditModal(props: {
     url,
     person,
   } = form.values;
-  console.log(form.values);
   return (
     <Modal
       opened={opened}
@@ -70,7 +69,7 @@ export function EditModal(props: {
           <div>
             <h3>Start-tid</h3>
             <DateTime
-              value={startTime.toDate()}
+              value={startTime?.toDate()}
               onChange={(date) => {
                 // firestore.Timestamp.fromDate(new Date());
                 const newDate = firebase.firestore.Timestamp.fromDate(
@@ -86,7 +85,7 @@ export function EditModal(props: {
           <div>
             <h3>TimeStamp</h3>
             <DateTime
-              value={timestamp.toDate()}
+              value={timestamp?.toDate()}
               onChange={(date) => {
                 const newDate = firebase.firestore.Timestamp.fromDate(
                   moment(date).toDate()

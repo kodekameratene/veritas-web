@@ -6,10 +6,15 @@ import {
   Badge,
   Group,
   useMantineTheme,
+  Button,
+  Modal,
+  ActionIcon,
+  Tooltip,
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { db } from "../pages/_app";
 import { EditPersonModal } from "./EditPersonModal";
+import * as Icon from "react-feather";
 
 export default function CardComponent(props: {
   image: string;
@@ -30,8 +35,38 @@ export default function CardComponent(props: {
     Image: props.image,
   };
   const form = useForm({ initialValues });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   return (
     <>
+      <Modal
+        opened={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Are you sure you want to remove this person?"
+      >
+        <div style={{ display: "flex" }}>
+          <Button
+            variant="filled"
+            color="gray"
+            onClick={() => setShowDeleteModal(false)}
+          >
+            Cancel
+          </Button>
+          <div style={{ width: 8 }}></div>
+          <Button
+            variant="light"
+            color="red"
+            onClick={() => {
+              collection
+                .doc(props.documentId)
+                .delete()
+                .then(() => setShowDeleteModal(false));
+            }}
+          >
+            Remove
+          </Button>
+        </div>
+      </Modal>
       <EditPersonModal
         opened={opened}
         setOpened={setOpened}
@@ -39,6 +74,19 @@ export default function CardComponent(props: {
         form={form}
       />
       <div style={{ marginBottom: 12 }}>
+        <div>
+          <Tooltip label="Delete">
+            <ActionIcon
+              color="red"
+              onClick={(e: { stopPropagation: () => void }) => {
+                e.stopPropagation();
+                setShowDeleteModal(true);
+              }}
+            >
+              <Icon.Trash2 />
+            </ActionIcon>
+          </Tooltip>
+        </div>
         <button onClick={() => setOpened(true)} style={{ textAlign: "left" }}>
           <Card shadow="sm" padding="lg">
             {props.image && (

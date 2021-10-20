@@ -3,6 +3,7 @@ import { Button } from "@mantine/core";
 import { db } from "../pages/_app";
 import { useForm } from "@mantine/hooks";
 import { EditPersonModal } from "./EditPersonModal";
+import { FancyAddButton } from "./FancyAddButton";
 
 export function NewPersonButton() {
   const handleSubmit = () => {
@@ -27,7 +28,11 @@ export function NewPersonButton() {
         handleSubmit={handleSubmit}
         form={form}
       />
-      <Button onClick={() => setOpened(true)}>Legg til ny person</Button>
+      <FancyAddButton onClick={() => setOpened(true)}>
+        Legg til ny person
+      </FancyAddButton>
+
+      {/* <Button onClick={() => setOpened(true)}>Legg til ny person</Button> */}
     </>
   );
 
