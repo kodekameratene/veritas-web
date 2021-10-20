@@ -8,6 +8,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { EditModal } from "../components/EditModal";
 import { FancyAddButton } from "../components/FancyAddButton";
 import { GenericCard } from "../components/GenericCard";
+import NavigationBar from "../components/NavigationBar";
 import { removeUndefined } from "../utils/removeUndefined";
 import { db } from "./_app";
 
@@ -35,13 +36,13 @@ export default function SearchPage() {
     // img: "",
     group: [group],
     // index: 0,
-    // page: [],
+    page: [],
     // showGroup: "",
     // startTime: null,
     // timestamp: firebase.firestore.Timestamp.now(),
     track: ["Veritas"],
     // url: null,
-    // person: null,
+    person: [],
   };
   const form = useForm({ initialValues });
   const handleSubmit = async (values: { [x: string]: any }) => {
@@ -88,6 +89,7 @@ export default function SearchPage() {
           </>
         )}
       </div>
+      <NavigationBar />
     </div>
   );
 }

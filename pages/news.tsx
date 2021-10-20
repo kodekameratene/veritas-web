@@ -10,6 +10,7 @@ import { useForm } from "@mantine/hooks";
 import { removeUndefined } from "../utils/removeUndefined";
 import { EditModal } from "../components/EditModal";
 import { ThemeContext } from "@emotion/react";
+import NavigationBar from "../components/NavigationBar";
 
 export default function Home() {
   const [data, isLoading, error] = useCollection(
@@ -17,6 +18,7 @@ export default function Home() {
       .firestore()
       .collection("festival/6Eh4cCNaCEEVndCZEqSX/content")
       .where("page", "array-contains", "news"),
+    // .orderBy("timestamp")
     {}
   );
 
@@ -67,7 +69,7 @@ export default function Home() {
     // title: "",
     // content: "",
     // img: "",
-    // group: "",
+    group: [],
     // index: 0,
     page: ["news"],
     // showGroup: "",
@@ -75,7 +77,7 @@ export default function Home() {
     timestamp: firebase.firestore.Timestamp.now(),
     track: ["Veritas"],
     // url: null,
-    // person: null,
+    person: [],
   };
   const form = useForm({ initialValues });
   const handleSubmit = async (values: { [x: string]: any }) => {
@@ -109,6 +111,7 @@ export default function Home() {
           <GenericCard key={doc.id} doc={doc} />
         ))}
       </div>
+      <NavigationBar />
     </div>
   );
 }

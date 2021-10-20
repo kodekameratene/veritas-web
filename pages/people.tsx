@@ -6,6 +6,7 @@ import { PeopleSection } from "../components/PeopleSection";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { EditPeopleSection } from "../components/EditPeopleSection";
 import { NewPersonButton } from "../components/NewPersonButton";
+import NavigationBar from "../components/NavigationBar";
 
 export default function Home() {
   const [mode, setMode] = useLocalStorage("mode", "view");
@@ -43,6 +44,7 @@ export default function Home() {
       ) : (
         <PeopleSection data={data} />
       )}
+      <NavigationBar />
     </div>
   );
 }

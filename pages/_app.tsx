@@ -28,7 +28,7 @@ export default function App(props: AppProps) {
         {/* <NormalizeCSS /> */}
         {/* <GlobalStyles /> */}
         <Component {...pageProps} />
-        <NavigationBar />
+        {/* <NavigationBar /> */}
       </MantineProvider>
     </>
   );

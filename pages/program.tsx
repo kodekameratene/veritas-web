@@ -7,6 +7,7 @@ import { useForm } from "@mantine/hooks";
 import { EditModal } from "../components/EditModal";
 import { removeUndefined } from "../utils/removeUndefined";
 import { db } from "./_app";
+import NavigationBar from "../components/NavigationBar";
 
 export default function Home() {
   const [data, isLoading, error] = useCollection(
@@ -24,7 +25,7 @@ export default function Home() {
     // title: "",
     // content: "",
     // img: "",
-    // group: "",
+    group: [],
     // index: 0,
     page: ["program"],
     // showGroup: "",
@@ -32,7 +33,7 @@ export default function Home() {
     // timestamp: firebase.firestore.Timestamp.now(),
     track: ["Veritas"],
     // url: null,
-    // person: null,
+    person: [],
   };
   const form = useForm({ initialValues });
   const handleSubmit = async (values: { [x: string]: any }) => {
@@ -66,6 +67,7 @@ export default function Home() {
           <GenericCard key={doc.id} doc={doc} />
         ))}
       </div>
+      <NavigationBar />
     </div>
   );
 }
