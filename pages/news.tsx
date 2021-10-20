@@ -93,6 +93,7 @@ export default function Home() {
       })
       .finally(() => {
         setOpened(false);
+        form.reset();
       });
   };
   return (

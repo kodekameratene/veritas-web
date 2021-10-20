@@ -1,7 +1,6 @@
 import { TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import firebase from "firebase";
-import { error } from "firebase-functions/logger";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -58,6 +57,7 @@ export default function SearchPage() {
       })
       .finally(() => {
         setOpened(false);
+        form.reset();
       });
   };
   return (

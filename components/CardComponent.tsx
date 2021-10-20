@@ -127,6 +127,7 @@ export default function CardComponent(props: {
     return form.onSubmit((values) => {
       collection.doc(props.documentId).update(values);
       setOpened(false);
+      form.reset();
     });
   }
 }

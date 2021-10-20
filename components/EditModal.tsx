@@ -65,21 +65,22 @@ export function EditModal(props: {
           placeholder="https://en-ekstern-lenke.no"
           label="Lenke (url)"
         />
-        {page?.includes("program") && (
-          <div>
-            <h3>Start-tid</h3>
-            <DateTime
-              value={startTime?.toDate()}
-              onChange={(date) => {
-                // firestore.Timestamp.fromDate(new Date());
-                const newDate = firebase.firestore.Timestamp.fromDate(
-                  moment(date).toDate()
-                );
-                return form.setFieldValue("startTime", newDate);
-              }}
-            />
-          </div>
-        )}
+        {page?.includes("program") ||
+          (group?.length > 0 && (
+            <div>
+              <h3>Start-tid</h3>
+              <DateTime
+                value={startTime?.toDate()}
+                onChange={(date) => {
+                  // firestore.Timestamp.fromDate(new Date());
+                  const newDate = firebase.firestore.Timestamp.fromDate(
+                    moment(date).toDate()
+                  );
+                  return form.setFieldValue("startTime", newDate);
+                }}
+              />
+            </div>
+          ))}
         {/* // timestamp?: { nanoseconds: number; seconds: number }; // UTC? Or what? */}
         {page?.includes("news") && (
           <div>

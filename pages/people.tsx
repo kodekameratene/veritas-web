@@ -12,7 +12,10 @@ export default function Home() {
   const [mode, setMode] = useLocalStorage("mode", "view");
 
   const [data, _isLoading, _error] = useCollection(
-    firebase.firestore().collection("conference/WwHJ20v2yZ3WG0fPvEKU/persons"),
+    firebase
+      .firestore()
+      .collection("conference/WwHJ20v2yZ3WG0fPvEKU/persons")
+      .orderBy("Name"),
     {}
   );
 

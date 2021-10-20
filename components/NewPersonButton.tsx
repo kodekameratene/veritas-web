@@ -10,6 +10,7 @@ export function NewPersonButton() {
     return form.onSubmit((values) => {
       collection.add(values);
       clearAndClose();
+      form.reset();
     });
   };
   const collection = db.collection("conference/WwHJ20v2yZ3WG0fPvEKU/persons/");
