@@ -60,6 +60,7 @@ export function EditPersonModal(props: {
           placeholder="Kari er som de fleste nordmenn født med ski på bena. Foruten å stå på ski liker hun å snakke om..."
           label="About"
           required
+          autosize
         />
         <TextInput
           value={form.values.Image}
